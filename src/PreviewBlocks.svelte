@@ -4,9 +4,16 @@
   type Block = {
     deviceName:string;
     screenRes:string;
+<<<<<<< Updated upstream
     mbWidth:number;
     mbHeight:number;
   }
+=======
+    mainpromo:Element;
+    secondarypromo:Element;
+    marketingblock:Element;
+  };
+>>>>>>> Stashed changes
   
   const blocks:Block[] = [
     {
@@ -16,10 +23,27 @@
       mbHeight: 316,
     },
     {
+<<<<<<< Updated upstream
       deviceName: "Tall Phone",
       screenRes: "414 x 896",
       mbWidth: 205,
       mbHeight: 318.35,
+=======
+      deviceName: "Phone 1",
+      screenRes: "360 x 640",
+      mainpromo: {
+        width: 312,
+        height: 245,
+      },
+      secondarypromo: {
+        width: 312,
+        height: 130,
+      },
+      marketingblock: {
+        width: 178.5,
+        height: 348.3,
+      }
+>>>>>>> Stashed changes
     },
     {
       deviceName: "iPhone 6/7/8",
