@@ -93,7 +93,7 @@ export function _render (obj:any, isTest:boolean) {
               document.head.appendChild(link);
             };
           
-            const openBtn = document.querySelector('div.mb-video[modal-id="${modalid}"]');
+            const openBtn = document.querySelector('div.mb.video[modal-id="${modalid}"]');
             const videoModal = document.querySelector('div.mb-video-modal[modal-id="${modalid}"]');
             const videoPlayer = videoModal.querySelector('iframe');
             const videoSrc = "${obj.href.value}";

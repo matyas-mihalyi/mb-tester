@@ -90,7 +90,7 @@ import {toRender, toCopy, element, input, TextInput, CheckboxInput, SelectInput}
 
 <div class="input-wrapper">
   <label for="type">
-    Element type
+    Component
   </label>
   <select id="type" name="type" bind:value={$element} on:change="{()=>{resetInput(); render(); }}">
     <option value="mainpromo">Main promo</option>
@@ -114,7 +114,7 @@ import {toRender, toCopy, element, input, TextInput, CheckboxInput, SelectInput}
     <!-- checkbox -->
     {:else if values.type === 'checkbox'}
     <!-- svelte-ignore component-name-lowercase -->
-    <input type="checkbox" id={key} bind:checked={values.value} on:change="{render}">
+    <input type="checkbox" id={key} bind:checked={values.value} on:change="{render}" disabled="{$input.marketingblock.variant.value === "video"}">
     
     <!-- text input -->
     {:else if values.type === 'input'}
@@ -123,7 +123,7 @@ import {toRender, toCopy, element, input, TextInput, CheckboxInput, SelectInput}
       on:keyup={( {currentTarget: {value}})=>debounce($input[$element][key], value)} 
       on:paste={(e) => handlePaste(e, $input[$element][key])}
       bind:value={values.value}
-      >
+    >
 
     <span class="material-icons clearbtn"  on:click="{()=>clearInput(key)}">
       clear
