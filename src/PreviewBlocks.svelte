@@ -1,15 +1,15 @@
 <script lang="ts">
 import {toRender, element} from './stores'
 
-  // type Element = 'marketingblock' | 'mainpromo' | 'secondarypromo'
-  type Element = {width:number, height:number}
+  // type Dimensions = 'marketingblock' | 'mainpromo' | 'secondarypromo'
+  type Dimensions = {width:number, height:number}
   
   type Block = {
     deviceName:string;
     screenRes:string;
-    mainpromo:Element;
-    secondarypromo:Element;
-    marketingblock:Element;
+    mainpromo:Dimensions;
+    secondarypromo:Dimensions;
+    marketingblock:Dimensions;
   };
   
   const blocks:Block[] = [
@@ -175,9 +175,9 @@ import {toRender, element} from './stores'
     },
   ];
 
-  function checkPromoWidth (block:any) {
+  function forceQueryClasses (block:Block) {
       const res = block.screenRes;
-      const width = res.replace(/^(\d+).*/, "$1");
+      const width = new Number(res.replace(/^(\d+).*/, "$1"));
       if (width < 600) {
         return "force-mobile force-tablet force-small force-medium"
       }
@@ -202,21 +202,21 @@ import {toRender, element} from './stores'
       <h3>{block.deviceName}</h3>
       <h4>Screen resolution: {block.screenRes}</h4>
       {#if $element === "marketingblock"}
-      <div class="block-wrapper {block[$element].width < 600 ? 'force-mobile' : ''}" style="width: {block[$element].width}px; height: {block[$element].height}px">
+      <div class="block-wrapper ${forceQueryClasses(block)}" style="width: {block[$element].width}px; height: {block[$element].height}px">
         {@html $toRender}
       </div>
 
       {:else if $element === "mainpromo"}
-      <div class="promo-wrapper {checkPromoWidth(block)}">
+      <div class="promo-wrapper {forceQueryClasses(block)}">
         <div class="promo-container">
-          <div class="promo-block {block[$element].width < 600 ? 'force-mobile' : ''}" style="width: {block[$element].width}px; height: {block[$element].height}px">
+          <div class="promo-block" style="width: {block[$element].width}px; height: {block[$element].height}px">
               {@html $toRender}
           </div>
         </div>
       </div>
 
       {:else if $element === "secondarypromo"}
-      <div class="blocks-container {checkPromoWidth(block)}" style="width: {block[$element].width}px; height: {block[$element].height}px">
+      <div class="blocks-container {forceQueryClasses(block)}" style="width: {block[$element].width}px; height: {block[$element].height}px">
         <div class="block" style="width: {block[$element].width}px; height: {block[$element].height}px">
             {@html $toRender}
         </div>

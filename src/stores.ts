@@ -1,30 +1,27 @@
 import { writable } from "svelte/store";
 
-export interface TextInputParam  {
+type BaseInput = {
   name:string;
-  value:string|number|string[];
-  type:string;
-  inputType?:string;
-  options?:Array<{name:string,value:string}>;
-};
-export interface SelectParam {
-  name:string;
-  value:string|number|string[];
-  type:string;
-  inputType:"select";
-  options:Array<{name:string,value:string}>;
-};
-export interface CheckboxParam {
-  name:string;
-  value:boolean;
-  type:string;
-  inputType:"checkbox";
-};
+  type: "input" | "checkbox" | "select";
+}
 
+export interface TextInput extends BaseInput {
+  type: "input"
+  value:string|number|string[];
+};
+export interface SelectInput extends BaseInput{
+  type: "select"
+  options:Array<{name:string,value:string}>;
+  value:string|number|string[];
+};
+export interface CheckboxInput extends BaseInput{
+  type: "checkbox"
+  value:boolean;
+};
 
 
 type Input = {
-  [propName:string]:TextInputParam|SelectParam|CheckboxParam
+  [propName:string]:TextInput|SelectInput|CheckboxInput
 }
 
 type Element = "marketingblock" | "mainpromo" | "secondarypromo";
@@ -36,7 +33,7 @@ type ElementType = {
 export const toRender = writable<string>("");
 export const toCopy = writable<string>("");
 export const element = writable<Element>("mainpromo");
-export const input = writable({
+export const input = writable<ElementType>({
   //Marketingblock
   marketingblock:{
     title:{
@@ -90,8 +87,7 @@ export const input = writable({
     newtab:{
       name: 'Open in new tab',
       value: false,
-      type: 'input',
-      inputType: 'checkbox'
+      type: 'checkbox',
     }
   },
   //Main promo

@@ -25,10 +25,7 @@
     "typescript": "4.3.5"
   },
   "dependencies": {
-<<<<<<< Updated upstream
-=======
     "gh-pages": "^3.2.3",
->>>>>>> Stashed changes
     "sirv-cli": "^1.0.0"
   }
 }

@@ -13,9 +13,8 @@
 
 <script lang="ts">
 import Modal,{getModal} from './Modal.svelte';
-import {toRender, toCopy, element, input} from './stores'
+import {toRender, toCopy, element, input, TextInput, CheckboxInput, SelectInput} from './stores'
 
-  $: inputFields = Object.keys($input[$element]);
   
   function render () {
     toRender.set(_render($input[$element], true));
@@ -32,16 +31,16 @@ import {toRender, toCopy, element, input} from './stores'
   };
 
   function resetInput () {
-    Object.keys($input[$element]).map(e => {
-      const type = typeof $input[$element][e].value;
-      if ($input[$element][e].value === "") {
+    Object.keys($input[$element]).map(key => {
+      
+      const type = $input[$element][key].type;
+
+      if ($input[$element][key].value === "") {
         return
-      } else if ($input[$element][e].type === "select") {
-        $input[$element][e].value = $input[$element][e].options[0].value;
-      } else if (type === "string") {
-        $input[$element][e].value = "";
-      } else if (type === "boolean") {
-        $input[$element][e].value = false;
+      } else if (type === "input") {
+        $input[$element][key].value = "";
+      } else if (type === "checkbox") {
+        $input[$element][key].value = false;
       }
     });
     render();
@@ -52,8 +51,9 @@ import {toRender, toCopy, element, input} from './stores'
   $:$input[$element], isDisabled = (Object.keys($input[$element]).filter(e => $input[$element][e].value === "").length) > 0;
   
 
-  function clearInput (field) {
-    $input[$element][field].value = ""
+  function clearInput (key:string) {
+    $input[$element][key].value = "";
+    render();
   };
 
   let timer;
@@ -71,12 +71,19 @@ import {toRender, toCopy, element, input} from './stores'
     render();
   };
 
+  function handleCheck (e) {
+
+  }
+
   function copyAlert () {
     getModal("alert").open();
     setTimeout(()=> {
       getModal("alert").close();
     }, 700)
   };
+
+  
+  $: inputFields = Object.entries($input[$element]);
 
 
 </script>
@@ -91,34 +98,34 @@ import {toRender, toCopy, element, input} from './stores'
     <option value="marketingblock">Marketingblock</option>
   </select>
 
-  {#each inputFields as field,i}
-    <label for={inputFields[i]}>
-      {$input[$element][inputFields[i]].name}
+  {#each inputFields as [key, values] ,i}
+    <label for={key}>
+      {values.name}
     </label>
 
     <!-- select -->
-    {#if $input[$element][inputFields[i]].type === 'select'}
-      <select id={inputFields[i]} name="type" bind:value={$input[$element][inputFields[i]].value} on:change="{render}">
-        {#each $input[$element][inputFields[i]].options as {name, value}}
+    {#if values.type === "select"}
+      <select id={key} name="type" bind:value={$input[$element][key].value} on:change="{render}">
+        {#each values.options as {name, value}}
           <option value={value}>{name}</option>
         {/each}
       </select>
 
     <!-- checkbox -->
-    {:else if $input[$element][inputFields[i]].type === 'input' && $input[$element][inputFields[i]].inputType === 'checkbox'}
+    {:else if values.type === 'checkbox'}
     <!-- svelte-ignore component-name-lowercase -->
-    <input type="checkbox" id={inputFields[i]} bind:checked={$input[$element][inputFields[i]].value}>
+    <input type="checkbox" id={key} bind:checked={values.value} on:change="{render}">
     
     <!-- text input -->
-    {:else}
+    {:else if values.type === 'input'}
     <!-- svelte-ignore component-name-lowercase -->
-    <input id={inputFields[i]} 
-      on:keyup={( {currentTarget: {value}})=>debounce($input[$element][inputFields[i]], value)} 
-      on:paste={(e) => handlePaste(e, $input[$element][inputFields[i]])}
-      bind:value={$input[$element][inputFields[i]].value}
+    <input id={key} 
+      on:keyup={( {currentTarget: {value}})=>debounce($input[$element][key], value)} 
+      on:paste={(e) => handlePaste(e, $input[$element][key])}
+      bind:value={values.value}
       >
 
-    <span class="material-icons clearbtn"  on:click="{()=>clearInput(field)}">
+    <span class="material-icons clearbtn"  on:click="{()=>clearInput(key)}">
       clear
     </span>
     {/if}
