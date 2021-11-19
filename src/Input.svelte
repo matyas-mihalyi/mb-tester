@@ -1,18 +1,19 @@
 <script context="module" lang="ts">
-  import { writable } from 'svelte/store';
-  export const toRender = writable("");
+  import {_render} from './templates'
+  export type Input = {
+    title:string,
+    buttontext:string,
+    picture:string,
+    href:string,
+    type:string,
+    eventlabel:string,
+    newtab:boolean
+  };
 </script>
 
 <script lang="ts">
-<<<<<<< Updated upstream
-  let inputValue = ``;
-
-  function render () {
-    toRender.set(`${inputValue}`);
-  };
-=======
 import Modal,{getModal} from './Modal.svelte';
-import {toRender, toCopy, element, input, SelectParam, TextInputParam, CheckboxParam} from './stores'
+import {toRender, toCopy, element, input} from './stores'
 
   $: inputFields = Object.keys($input[$element]);
   
@@ -77,16 +78,10 @@ import {toRender, toCopy, element, input, SelectParam, TextInputParam, CheckboxP
     }, 700)
   };
 
-  //input types
 
->>>>>>> Stashed changes
 </script>
+
 <div class="input-wrapper">
-<<<<<<< Updated upstream
-  <label for="mbcode">Insert code below</label>
-  <input id="mbcode" type="text" bind:value={inputValue}>
-  <button class="vtmn-btn" on:click="{()=> render()}">Render</button>
-=======
   <label for="type">
     Element type
   </label>
@@ -102,8 +97,7 @@ import {toRender, toCopy, element, input, SelectParam, TextInputParam, CheckboxP
     </label>
 
     <!-- select -->
-    {#if $input[$element][inputFields[i]].type === 'select' && $input[$element][inputFields[i]]}
-
+    {#if $input[$element][inputFields[i]].type === 'select'}
       <select id={inputFields[i]} name="type" bind:value={$input[$element][inputFields[i]].value} on:change="{render}">
         {#each $input[$element][inputFields[i]].options as {name, value}}
           <option value={value}>{name}</option>
@@ -150,20 +144,13 @@ import {toRender, toCopy, element, input, SelectParam, TextInputParam, CheckboxP
   <Modal id="alert">
     <span>Code copied</span> 
   </Modal>
->>>>>>> Stashed changes
 </div>
+
+
 
 <style>
   .input-wrapper{
     display: flex;
-<<<<<<< Updated upstream
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .input-wrapper > * {
-    margin: 0.8rem 0;
-=======
     flex-wrap: wrap;
     justify-content: flex-start;
     grid-column: 1/2;
@@ -191,40 +178,28 @@ import {toRender, toCopy, element, input, SelectParam, TextInputParam, CheckboxP
   }
   select {
     width: 80%
->>>>>>> Stashed changes
   }
 
-  label, input {
-    font-size: 1.6rem;
-    font-family: 'Roboto', 'system-ui', '-apple-system', sans-serif;
+  input[type="checkbox"]{
+    transform: scale(1.5) translatex(25%) translatey(25%);
   }
 
-<<<<<<< Updated upstream
-  .vtmn-btn {
-  box-shadow: inset 0 0 0 0.200rem transparent;
-  font-size: 1.600rem;
-  min-height: 4.800rem;
-  max-width: 100%;
-  padding: 1.400rem 2.400rem;
-  line-height: 1.25;
-  letter-spacing: 0.050rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  background-color: #007dbc;
-  border-radius: 0.400rem;
-  border-width: 0;
-  box-sizing: border-box;
-  display: inline-block;
-  font-family: 'Roboto', 'system-ui', '-apple-system', sans-serif;
-  font-weight: 700;
-  position: relative;
-  text-align: center;
-  color: #fff;
-  text-decoration: none;
-  cursor: pointer;
-}
-=======
+  .button-wrapper {
+    margin-top: 3.2em;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    column-gap: 1.6rem;
+  }
+
+  .clearbtn {
+    margin-left: 0.8rem;
+    cursor: pointer;
+  }
+  .clearbtn:hover {
+    color:red;
+  }
+
   label[for="type"] {
     font-size: 1.8rem;
     font-weight: 700;
@@ -238,5 +213,4 @@ import {toRender, toCopy, element, input, SelectParam, TextInputParam, CheckboxP
     width: 100%;
     font-size: 1.8rem;
   }
->>>>>>> Stashed changes
 </style>

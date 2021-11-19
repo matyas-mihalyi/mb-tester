@@ -1,8 +1,6 @@
 <script lang="ts">
 	import Input from "./Input.svelte";
 	import PreviewBlocks from "./PreviewBlocks.svelte";
-<<<<<<< Updated upstream
-=======
 	import { onMount } from "svelte";
 
 
@@ -13,7 +11,6 @@
         MBLink.type = 'text/css';
         document.head.appendChild(MBLink);
 	});
->>>>>>> Stashed changes
 </script>
 
 <main>
