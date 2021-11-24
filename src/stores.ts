@@ -32,7 +32,7 @@ type ElementType = {
 
 export const toRender = writable<string>("");
 export const toCopy = writable<string>("");
-export const element = writable<Element>("mainpromo");
+export const element = writable<Element>("marketingblock");
 export const input = writable<ElementType>({
   //Marketingblock
   marketingblock:{

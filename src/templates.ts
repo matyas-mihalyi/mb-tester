@@ -51,18 +51,18 @@ export function _render (obj:any, isTest:boolean) {
           </script>
           <a class="mb ${obj.variant.value}" ${obj.newtab.value ? 'target="_blank"' : ''} href="${url}" onclick='
                 let url = window.location.href; 
-                let mbLocation = url.replace(/.*\/(c[A-Za-z0-9-]+)\/.*?\/_.*$/, "$1");
+                let mbLocation = url.replace(/.*\\/(c[A-Za-z0-9-]+)\\/.*?\\/_.*$/, "$1");
                 ga("transcript.send",  {
                     hitType: "event",
                     eventCategory: "ProductListing",
                     eventAction: "Marketingblock",
-                    eventLabel: \${'${obj.eventlabel.value}' + "_" + "mbLocation"}
+                    eventLabel: "${obj.eventlabel.value}" + "_" + mbLocation
               });
           '>
             <img src="${img}" alt="choose a background">
             <div class="mb-overlay"></div>
             <span class="mb-title">${obj.title.value}</span>
-            <button class="vtmn-btn vtmn-btn_variant--secondary-reversed" type="button">${obj.buttontext.value}<span
+            <button class="vtmn-btn vtmn-btn_variant--secondary-reversed" type="button">${obj.buttontext.value}</button>
           </a>
           `;
         } else {
@@ -93,7 +93,8 @@ export function _render (obj:any, isTest:boolean) {
               document.head.appendChild(link);
             };
           
-            const openBtn = document.querySelector('div.mb.video[modal-id="${modalid}"]');
+            const openBtn = document.querySelector('div.mb.video[modal-id="${modalid}"] button');
+            console.log(openBtn);
             const videoModal = document.querySelector('div.mb-video-modal[modal-id="${modalid}"]');
             const videoPlayer = videoModal.querySelector('iframe');
             const videoSrc = "${obj.href.value}";
