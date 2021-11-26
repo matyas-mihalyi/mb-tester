@@ -3,7 +3,7 @@ import { writable } from "svelte/store";
 type BaseInput = {
   name:string;
   type: "input" | "checkbox" | "select";
-}
+};
 
 export interface TextInput extends BaseInput {
   type: "input"
@@ -20,11 +20,11 @@ export interface CheckboxInput extends BaseInput{
 };
 
 
-type Input = {
+export type Input = {
   [propName:string]:TextInput|SelectInput|CheckboxInput
-}
+};
 
-type Element = "marketingblock" | "mainpromo" | "secondarypromo";
+export type Element = "marketingblock" | "mainpromo" | "secondarypromo";
 
 type ElementType = {
   [propName in Element]: Input;

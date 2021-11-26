@@ -1,5 +1,5 @@
 <script context="module" lang="ts">
-  import {_render} from './templates'
+  import { renderElement } from './templates'
   export type Input = {
     title:string,
     buttontext:string,
@@ -15,21 +15,25 @@
 import Modal,{getModal} from './Modal.svelte';
 import {toRender, toCopy, element, input, TextInput, CheckboxInput, SelectInput} from './stores'
 
-  
+  //set stores" content to the html content with
   function render () {
-    toRender.set(_render($input[$element], true));
-    toCopy.set(_render($input[$element], false));
+    toRender.set(renderElement($input[$element], true));
+    toCopy.set(renderElement($input[$element], false));
+    console.log($toRender)
+    console.log($toCopy)
   };
+
+  //render any time the stores are updated
   $:{
     render();
   };
 
-  //HELPERS
-
+  //copy html code to clipboard
   function copyToClipboard () {
     navigator.clipboard.writeText($toCopy);
   };
 
+  //clear or set value to default for all input types
   function resetInput () {
     Object.keys($input[$element]).map(key => {
       
@@ -46,17 +50,18 @@ import {toRender, toCopy, element, input, TextInput, CheckboxInput, SelectInput}
     render();
   };
 
-  //disable copy if not everything is filled
-  let isDisabled = true;
-  $:$input[$element], isDisabled = (Object.keys($input[$element]).filter(e => $input[$element][e].value === "").length) > 0;
-  
-
+  //clear a specific text input field
   function clearInput (key:string) {
     $input[$element][key].value = "";
     render();
   };
 
-  let timer;
+  //disable copy if not everything is filled
+  let isDisabled = true;
+  $:$input[$element], isDisabled = (Object.keys($input[$element]).filter(e => $input[$element][e].value === "").length) > 0;
+  
+  //debouncer
+  let timer:null|ReturnType<typeof setTimeout>;
   const debounce = (value, input) => {
     clearTimeout(timer);
 		timer = setTimeout(() => {
@@ -65,16 +70,14 @@ import {toRender, toCopy, element, input, TextInput, CheckboxInput, SelectInput}
 		}, 750);
   };
 
+  //keyup event is not triggered when pasting with mouse
   function handlePaste (e, value) {
     const text = e.clipboardData.getData('text');
     value.value = text;
     render();
   };
 
-  function handleCheck (e) {
-
-  }
-
+  //alert window when code is copied
   function copyAlert () {
     getModal("alert").open();
     setTimeout(()=> {
@@ -82,12 +85,13 @@ import {toRender, toCopy, element, input, TextInput, CheckboxInput, SelectInput}
     }, 700)
   };
 
-  
+  //for a simpler each loop assign selected element's inputs to a variable 
   $: inputFields = Object.entries($input[$element]);
 
 
 </script>
 
+<!-- element selector -->
 <div class="input-wrapper">
   <label for="type">
     Component
@@ -98,12 +102,13 @@ import {toRender, toCopy, element, input, TextInput, CheckboxInput, SelectInput}
     <option value="marketingblock">Marketingblock</option>
   </select>
 
+  <!-- label for inputs -->
   {#each inputFields as [key, values] ,i}
     <label for={key}>
       {values.name}
     </label>
 
-    <!-- select -->
+    <!-- select input -->
     {#if values.type === "select"}
       <select id={key} name="type" bind:value={$input[$element][key].value} on:change="{render}">
         {#each values.options as {name, value}}
@@ -111,7 +116,7 @@ import {toRender, toCopy, element, input, TextInput, CheckboxInput, SelectInput}
         {/each}
       </select>
 
-    <!-- checkbox -->
+    <!-- checkbox input -->
     {:else if values.type === 'checkbox'}
     <!-- svelte-ignore component-name-lowercase -->
     <input type="checkbox" id={key} bind:checked={values.value} on:change="{render}" disabled="{$input.marketingblock.variant.value === "video"}">
@@ -124,7 +129,6 @@ import {toRender, toCopy, element, input, TextInput, CheckboxInput, SelectInput}
       on:paste={(e) => handlePaste(e, $input[$element][key])}
       bind:value={values.value}
     >
-
     <span class="material-icons clearbtn"  on:click="{()=>clearInput(key)}">
       clear
     </span>
@@ -133,7 +137,7 @@ import {toRender, toCopy, element, input, TextInput, CheckboxInput, SelectInput}
   {/each}
 
 
-
+    <!-- buttons  -->
   <div class="button-wrapper">
 
     <button class="vtmn-btn vtmn-btn_variant--secondary" on:click="{()=> resetInput()}">
@@ -148,6 +152,7 @@ import {toRender, toCopy, element, input, TextInput, CheckboxInput, SelectInput}
     </button>
   </div>
 
+  <!-- alert modal -->
   <Modal id="alert">
     <span>Code copied</span> 
   </Modal>
