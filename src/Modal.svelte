@@ -6,6 +6,7 @@
 
 
 <script lang="ts">
+  import { fade } from 'svelte/transition';
   import { onDestroy } from 'svelte';
   let visible:boolean = false;
   export let id: string;
@@ -22,7 +23,7 @@
 
 {#if visible}
 <div class="modal">
-  <div class="modal-content">
+  <div class="modal-content" transition:fade>
     <slot></slot>
   </div>  
 </div>
@@ -36,7 +37,7 @@
 		left: 0;
 		right: 0;
 		bottom: 0;
-		background: #4448;
+		/* background: #4448; */
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -51,6 +52,7 @@
 		padding: 1.625em;
     display: flex;
     flex-direction: column;
+    box-shadow: 0.125em 0.125em 1em hsla(0, 0%, 0%, .5);
   }
  
 </style>

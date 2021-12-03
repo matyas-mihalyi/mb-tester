@@ -129,9 +129,7 @@ import {toRender, toCopy, element, input, TextInput, CheckboxInput, SelectInput}
       on:paste={(e) => handlePaste(e, $input[$element][key])}
       bind:value={values.value}
     >
-    <span class="material-icons clearbtn"  on:click="{()=>clearInput(key)}">
-      clear
-    </span>
+    <i class="ri-close-line clearbtn" on:click="{()=>clearInput(key)}"></i>  
     {/if}
   
   {/each}
@@ -154,7 +152,10 @@ import {toRender, toCopy, element, input, TextInput, CheckboxInput, SelectInput}
 
   <!-- alert modal -->
   <Modal id="alert">
-    <span>Code copied</span> 
+    <div class="copy-message">
+      <p>Code Copied!</p>
+      <i class="ri-check-line" id="check"></i>
+    </div>
   </Modal>
 </div>
 
@@ -211,6 +212,10 @@ import {toRender, toCopy, element, input, TextInput, CheckboxInput, SelectInput}
   .clearbtn:hover {
     color:red;
   }
+  
+  .ri-close-line {
+    font-size: 2.25rem;
+  } 
 
   label[for="type"] {
     font-size: 1.8rem;
@@ -218,11 +223,23 @@ import {toRender, toCopy, element, input, TextInput, CheckboxInput, SelectInput}
     text-align: center;
     width: 100%;
   }
+
   #type {
     border: 4px solid hsl(200, 100%, 36.9%);
     padding: 0.8rem;
     border-radius: 3px;
     width: 100%;
     font-size: 1.8rem;
+  }
+
+
+  .copy-message {
+    display: flex;
+    align-items: center;
+
+  }
+  .copy-message > i {
+    font-size: 6rem;
+    color: #02BE8A;
   }
 </style>

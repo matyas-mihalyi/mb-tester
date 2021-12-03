@@ -1,6 +1,18 @@
 import { backgroundImage, href } from "../templates";
 import type { Input } from "../stores";
 
+//check if video is hosted on youtube
+const isYouTube = (url) => /youtube/.test(url);
+
+//convert youtube links to embed links for video marketingblocks
+const embedLink = (url):string => {
+  return isYouTube(url) ?
+    url.replace("watch?v=", "embed/")
+  :
+    url
+};
+
+//get random id for video modal
 const modalid = Math.floor(Math.random() * (1000 - 1) + 1);
 
 
@@ -66,7 +78,7 @@ export function renderMarketingblock (input:Input):string  {
      console.log(openBtn);
      const videoModal = document.querySelector('div.mb-video-modal[modal-id="${modalid}"]');
      const videoPlayer = videoModal.querySelector('iframe');
-     const videoSrc = "${input.href.value}";
+     const videoSrc = "${embedLink(input.href.value)}";
      let gaTimeout15s;
      let gaTimeout45s;
    

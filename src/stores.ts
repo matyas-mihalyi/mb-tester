@@ -19,7 +19,6 @@ export interface CheckboxInput extends BaseInput{
   value:boolean;
 };
 
-
 export type Input = {
   [propName:string]:TextInput|SelectInput|CheckboxInput
 };
@@ -30,9 +29,17 @@ type ElementType = {
   [propName in Element]: Input;
 };
 
+//code to render in preview blocks
 export const toRender = writable<string>("");
+
+//production code to copy
 export const toCopy = writable<string>("");
+
+//type of element being previewed
 export const element = writable<Element>("marketingblock");
+
+
+//elements and corresponding input values
 export const input = writable<ElementType>({
   //Marketingblock
   marketingblock:{
@@ -146,4 +153,4 @@ export const input = writable<ElementType>({
       type: 'input'
     }
   },
-})
+});

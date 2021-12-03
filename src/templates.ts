@@ -19,17 +19,17 @@ type QualityTags = {
 
 const qualityTags:QualityTags = {
   marketingblock: {
-    mobile:"?format=auto&f=300x0&quality=80",
+    mobile:"?format=auto&f=0x180&quality=80",
     desktop:"?format=auto&f=300x0&quality=80",
     fallback:"?format=auto&f=300x0&quality=80"
   },
   mainpromo: {
-    mobile: "?format=auto&f=0x600&quality=80",
+    mobile: "?format=auto&f=0x245&quality=80",
     desktop: "?format=auto&f=0x600&quality=80",
     fallback: "?format=auto&f=0x600&quality=80"
   },
   secondarypromo: {
-    mobile: "?format=auto&f=0x250&quality=70",
+    mobile: "?format=auto&f=0x130&quality=70",
     desktop: "?format=auto&f=0x250&quality=70",
     fallback: "?format=auto&f=0x250&quality=70"
   }
@@ -49,9 +49,9 @@ function removeQualityTags (url):string  {
 export const backgroundImage = (url) => {
   return isPixl(url) && url !== "" ?
     {
-      mobile: removeQualityTags(url) + pictureQualityTag.mobile,
-      desktop: removeQualityTags(url) + pictureQualityTag.desktop,
-      fallback: removeQualityTags(url) + pictureQualityTag.fallback
+      mobile: removeQualityTags(url) + qualityTags[elementRef()].mobile,
+      desktop: removeQualityTags(url) + qualityTags[elementRef()].desktop,
+      fallback: removeQualityTags(url) + qualityTags[elementRef()].fallback
     }
     :
     url;    
@@ -68,10 +68,8 @@ export const backgroundImage = (url) => {
 //   }
 // } 
 
-
 //remove unnecessary domain name from url
 export const href = (url) => url.replace(/http.*\.hu(.*)/, "$1");
-
 
 //return the desired html element in string
 export function renderElement (input:Input, isTest:boolean): string {
